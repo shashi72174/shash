@@ -11,7 +11,7 @@ public class MaximumRepeatingCharacters {
 		List<String> l = new ArrayList<String>();
 		int count = 0;
 		char firstChar = '\u0000';
-		for(int i=0;i<str.length();i++) {
+		for(int i=0;i<str.length();i++) {  
 			if(i==0){
 				firstChar=str.charAt(i);
 				count++;
