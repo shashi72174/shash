@@ -94,7 +94,10 @@ class BST<V extends Comparable<V>> {
 				// lets go with first approach -- finding minimum from right
 				// subtree from deleting node
 				// so minimum will always be child nodes of the right subtree.
-				Node<V> temp = root;
+
+				Node<V> node = root;
+				Node<V> temp = node;
+				node = null;
 				if (root.right.left == null) {
 					root.value = root.right.value;
 					root.right = root.right.right;
@@ -103,8 +106,7 @@ class BST<V extends Comparable<V>> {
 					root.value = n.value;
 
 				}
-
-				return temp;
+				return node;
 			}
 		}
 
@@ -129,6 +131,7 @@ public class BSTApp<V extends Comparable<V>> {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		System.out.println(System.currentTimeMillis());
 		BST<Integer> bst = new BST<Integer>();
 		Node<Integer> root = null;
 
@@ -157,10 +160,10 @@ public class BSTApp<V extends Comparable<V>> {
 		}
 		// delete a node from BST
 
-		Node<Integer> deletedNode = bst.delete(root, 1);
+		Node<Integer> deletedNode = bst.delete(root, 5);
 		System.out.println(deletedNode);
 		root = bst.insert(root, 20);
-
+		System.out.println(System.currentTimeMillis());
 	}
 
 }
