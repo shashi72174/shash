@@ -12,13 +12,13 @@ class Node<V extends Comparable<V>> {
 	}
 
 	public int compareTo(V o) {
-		// TODO Auto-generated method stub
 		return value.compareTo(o);
 	}
 }
 
 class BST<V extends Comparable<V>> {
 	Node<V> parent = null;
+	boolean flag = false; // flag is false means left or else right
 
 	public Node<V> insert(Node<V> root, V value) {
 		if (root == null) {
@@ -94,27 +94,34 @@ class BST<V extends Comparable<V>> {
 				// lets go with first approach -- finding minimum from right
 				// subtree from deleting node
 				// so minimum will always be child nodes of the right subtree.
-
-				Node<V> node = root;
-				Node<V> temp = node;
-				node = null;
+				Node<V> temp = root;
 				if (root.right.left == null) {
-					root.value = root.right.value;
-					root.right = root.right.right;
+					if (flag) {
+						parent.right.value = root.right.value;
+						parent.right.right = root.right.right;
+					} else {
+						parent.left.value = root.right.value;
+						parent.left.right = root.right.right;
+					}
 				} else {
 					Node<V> n = minValue(root.right);
-					root.value = n.value;
+					if (flag)
+						parent.right.value = n.value;
+					else
+						parent.left.value = n.value;
 
 				}
-				return node;
+				return temp;
 			}
 		}
 
 		if (root.value.compareTo(val) > 0) {
 			parent = root;
+			flag = false;
 			return delete(root.left, val);
 		} else {
 			parent = root;
+			flag = true;
 			return delete(root.right, val);
 		}
 	}
@@ -130,7 +137,6 @@ class BST<V extends Comparable<V>> {
 public class BSTApp<V extends Comparable<V>> {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		System.out.println(System.currentTimeMillis());
 		BST<Integer> bst = new BST<Integer>();
 		Node<Integer> root = null;
@@ -149,21 +155,17 @@ public class BSTApp<V extends Comparable<V>> {
 		root = bst.insert(root, 13);
 
 		// searh a node in BST
-
 		Node<Integer> searchNode = bst.search(root, 6);
 		if (searchNode == null)
 			System.out.println("Not found");
-		else {
+		else
 			System.out.println("Found");
-			// System.out.println(searchNode.left.value + "\t" +
-			// searchNode.right.value);
-		}
-		// delete a node from BST
 
-		Node<Integer> deletedNode = bst.delete(root, 5);
+		// delete a node from BST
+		Node<Integer> deletedNode = bst.delete(root, 3);
 		System.out.println(deletedNode);
+
 		root = bst.insert(root, 20);
 		System.out.println(System.currentTimeMillis());
 	}
-
 }
