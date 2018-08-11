@@ -5,6 +5,10 @@ class Node<V extends Comparable<V>> {
 	Node<V> left;
 	Node<V> right;
 
+	Node(V value) {
+		this.value = value;
+	}
+
 	Node(V value, Node<V> left, Node<V> right) {
 		this.value = value;
 		this.left = left;
@@ -19,6 +23,7 @@ class Node<V extends Comparable<V>> {
 class BST<V extends Comparable<V>> {
 	Node<V> parent = null;
 	boolean flag = false; // flag is false means left or else right
+	Node<V> temp = null;
 
 	public Node<V> insert(Node<V> root, V value) {
 		if (root == null) {
@@ -94,7 +99,7 @@ class BST<V extends Comparable<V>> {
 				// lets go with first approach -- finding minimum from right
 				// subtree from deleting node
 				// so minimum will always be child nodes of the right subtree.
-				Node<V> temp = root;
+				temp = new Node<V>(root.value, root.left, root.right);
 				if (root.right.left == null) {
 					if (flag) {
 						parent.right.value = root.right.value;
@@ -110,7 +115,13 @@ class BST<V extends Comparable<V>> {
 					else
 						parent.left.value = n.value;
 
+					// delete minValue node from right sub tree --- to implement
+					// still
+					// temp = parent;
+					remove(parent, n.value);
+
 				}
+
 				return temp;
 			}
 		}
@@ -126,12 +137,35 @@ class BST<V extends Comparable<V>> {
 		}
 	}
 
-	public Node<V> minValue(Node<V> node) {
+	private Node<V> minValue(Node<V> node) {
 		if (node.left != null) {
 			return minValue(node.left);
 		}
 		return node;
 	}
+
+	private Node<V> remove(Node<V> node, V value) {
+		if (node.value.compareTo(value) == 0) {
+			// case1 --- Node to be removed has no children then remove node
+			if (node.left == null && node.right == null) {
+				if (value.compareTo(parent.value) > 0)
+					parent.right = null;
+				else
+					parent.left = null;
+				return node;
+			}
+		}
+		if (node.value.compareTo(value) > 0) {
+			parent = node;
+			flag = false;
+			return remove(node.left, value);
+		} else {
+			parent = node;
+			flag = true;
+			return remove(node.right, value);
+		}
+	}
+
 }
 
 public class BSTApp<V extends Comparable<V>> {
