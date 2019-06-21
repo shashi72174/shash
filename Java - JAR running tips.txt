@@ -1,0 +1,9 @@
+If is not executable then we need to run the jar something like this:
+
+java -cp app.jar com.somepackage.SomeClass
+
+If the jar is executable then we can run the jar something like this:
+
+java -jar app.jar
+
+Here it will search for entry class to start execution.
